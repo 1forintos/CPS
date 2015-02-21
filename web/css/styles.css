@@ -1,0 +1,92 @@
+body { 
+	margin: 0; 
+}
+
+canvas { 
+	width: 100%; 
+	height: 100%;
+}
+
+textarea {
+	background: black;
+	overflow: scroll;
+	color: white;
+	resize: none;
+}
+
+[class^='ui-']{
+	font-size: 12px;
+}
+
+.popup {
+	display: none;
+}
+
+#select_requiredApplications	{
+	width: 100%;
+}
+
+select {
+	width: 100%;
+}
+
+#table_newHostInstance, #table_newHostInstance td, 
+#table_newTypes, #table_newTypes td,
+#table_newRequirement, #table_newRequirement td {
+	text-align: center; 
+	margin-left: 5px;
+	border: 2px solid grey;
+	border-radius: 5px;
+}
+
+, 
+#table_requests, #table_requests td {	
+	margin-left: 5px;
+	border: 2px solid grey;
+	border-radius: 5px;
+}
+
+
+td, tr {
+	padding: 5px;
+}
+
+#table_newTypes {
+	background: black;
+}
+
+#table_newHostInstance {
+	width: 100%;
+	background: black;
+}
+
+#table_newRequirement {
+	width: 100%;
+	background: black;
+}
+
+
+.label	{
+	color: white;
+	margin-right: 5px;
+}
+
+#inputArea	{
+	width: 40%;
+	margin-top: 10px;
+	position: absolute;
+}
+
+#select_host {
+	width: 100%;
+}
+
+.hostLabel {
+	position: absolute;
+	width: 200px;
+	text-align: center;
+	display: table;
+	height: 20;
+	color: black;
+	font-size: 16px;
+}

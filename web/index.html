@@ -1,0 +1,154 @@
+<html>
+	<head>
+		<title>CPS</title>
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<link rel="stylesheet" href="jquery-ui-1.11.2.custom/jquery-ui.min.css">
+	</head>
+	<body>
+
+		<script src="jquery-ui-1.11.2.custom/external/jquery/jquery.js"></script>
+		<script src="jquery-ui-1.11.2.custom/jquery-ui.min.js"></script>	
+		<script src="js/three.min.js"></script>
+		<script src="js/cps.js"></script>
+		<script src="js/visualizer.js"></script>
+		<script src="js/host.js"></script>
+		<script src="js/application.js"></script>
+		<script src="js/resourcerequirement.js"></script>	
+		<script src="fonts/helvetiker_regular.typeface.js"></script>
+		<table id="inputArea">
+			<tr>
+				<td>					
+					<table id="table_newHostInstance">
+						<tr>
+							<td class="label" colspan="3">New host instance</td>
+						</tr>
+						<tr>
+							<td class="label" width="40%;">Host name</td>
+							<td class="label" width="40%;">Type</td>
+							<td class="label" width="20%;"></td>
+						</tr>
+						<tr>
+							<td><input id="input_newHost" type="text"/></td>
+							<td style="width: 25%;" ><select id="select_newHostType"/></td>
+							<td><button id="btn_addNewHost">Add</button></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<table id="table_newTypes">
+					<!--
+						<tr>							
+							<td><button id="btn_addNewHostType">Add new Host type</button></td>
+						</tr>
+					-->
+						<tr>
+							<td><button id="btn_addNewAppType">Add new Application type</button></td>
+						</tr>
+						<tr>
+							<td><button id="btn_addNewRequest">Add new Request</button></td>
+						</tr>
+					</table>					
+				</td>							
+				<!--
+				<td style="width: 45%;">
+					<table id="table_newRequirement" style="width: 100%;">
+						<tr>
+							<td class="label" colspan="3">New requirement</td>
+						</tr>
+						<tr>
+							<td class="label">Application types</td>
+							<td class="label">Host</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style="width: 50%;">
+								<select id="select_requiredApplications" multiple/>
+							</td>
+							<td style="width: 50%;">
+								<select id="select_host"/>
+							</td>
+							<td><button id="btn_addNewRequirement">Add</button></td>
+						</tr>
+					</table>
+				</td>	
+				-->	
+			</tr>
+		</table>		
+	</body>
+	<div id="dialog_addNewAppType" class="popup" title="Add new Application type">
+		<table id="dialog_addNewAppType_part1">
+			<tr>
+				<td class="label" >Name:</td>
+				<td><input id="input_appType_name" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label" >ID:</td>
+				<td><input id="input_appType_id" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label" >EXE file URL:</td>				
+				<td><input id="input_appType_exeFileUrl" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label" >EXE file type:</td>				
+				<td><input id="input_appType_exeFileType" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label" >ZIP file URL:</td>			
+				<td><input id="input_appType_zipFileUrl" type="text"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align: right;">
+					<button id="btn_next" style="margin-top: 10px; ">Next</button>
+				</td>
+			</tr>				
+		</table>
+		<table id="dialog_addNewAppType_part2" style="display: none; margin-left: 10px;">
+			<tr>
+				<td colspan="2" class="label" style="text-align: center;">Requirements</td>
+			</tr>
+			<tr>				
+				<td class="label">Host type:</td>				
+				<td>
+					<select id="select_hostTypeForApp"/>
+				</td>
+			</tr>					
+			<tr>
+				<td class="label">CPU:</td>				
+				<td><input id="input_appType_cpu" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label">Memory:</td>				
+				<td><input id="input_appType_memory" type="text"/></td>
+			</tr>
+			<tr>
+				<td class="label">HDD:</td>			
+				<td><input id="input_appType_hdd" type="text"/></td>
+			</tr>			
+			<tr>
+				<td style="text-align: left;">
+					<button id="btn_back" style="margin-top: 10px;">Back</button>
+				</td>
+				<td style="text-align: right;">
+					<button id="btn_saveAppType" style="margin-top: 10px;">Save</button>
+				</td>
+			</tr>			
+		</table>
+	</div>
+	<div id="dialog_addNewRequest" class="popup" title="New Request" style="width: 100%; ">		
+		<table style="width: 100%;">					
+			<tr>				
+				<td class="label">Application type</td>				
+				<td class="label">Count</td>	
+			</tr>								
+		</table>
+		<table id="table_requests" style="width: 100%; ">
+			<tbody></tbody>
+		</table>
+		<div style="width: 100%; text-align: right">
+			<button id="btn_sendNewRequest" style="margin-top: 10px;">Save</button>		
+		</div>
+	</div>
+</html>
