@@ -24,33 +24,7 @@ window.onload = function() {
 }
 
 window.setInterval(function(){  
-	$.post('localhost:8070/cps/full', null, function(results) { 
-		results = '[{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":2,"availableCpu":9,"availableHdd":10,"id":"hi2","type":"ht1","nodeIp":"asd.asd.asd.asd","applications":[{ "id":"hi2", "type":"ht1"}]},{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":10,"availableCpu":10,"availableHdd":10,"id":"hi1","type":"ht1","applications":[]}]';
-		var receivedHosts = JSON.parse(results);
-		hosts = [];
-		for(var i in receivedHosts) {
-			var type = getHostType(receivedHosts[i].type);
-			var newHost = new Host(receivedHosts[i].id, type);
-			newHost.availableCpu = receivedHosts[i].availableCpu;
-			newHost.availableMemory = receivedHosts[i].availableMemory;
-			newHost.availableHdd = receivedHosts[i].availableHdd;
-			newHost.totalCpu = receivedHosts[i].totalCpu;
-			newHost.totalMemory = receivedHosts[i].totalMemory;
-			newHost.totalHdd = receivedHosts[i].totalHdd;
-			newHost.nodeIp = receivedHosts[i].nodeIp;
-			newHost.availableCpu = receivedHosts[i].availableCpu;
-			for(var j in receivedHosts[i].applications) {
-				var app = receivedHosts[i].applications[j];
-				var appType = getAppType(app.type);
-				var newApp = new Application(app.id, appType, newHost);
-				newHost.applications.push(newApp);
-			}
-			hosts.push(newHost);
-		}
-		if(readyToRender) {
-			renderFrame();
-		}
-	});
+	getFullDataFromREST();
 }, 1000);
 
 function initUI(scene) {
@@ -425,7 +399,34 @@ function getAppTypesFromDB() {
 }
 
 function getFullDataFromREST() {
+	$.getJSON('http://localhost:8070/cps/hosts?callback=', null, function(results) { 
 
+		// results = '[{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":2,"availableCpu":9,"availableHdd":10,"id":"hi2","type":"ht1","nodeIp":"asd.asd.asd.asd","applications":[{ "id":"hi2", "type":"ht1"}]},{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":10,"availableCpu":10,"availableHdd":10,"id":"hi1","type":"ht1","applications":[]}]';
+		var receivedHosts = results;
+		hosts = [];
+		for(var i in receivedHosts) {
+			var type = getHostType(receivedHosts[i].type);
+			var newHost = new Host(receivedHosts[i].id, type);
+			newHost.availableCpu = receivedHosts[i].availableCpu;
+			newHost.availableMemory = receivedHosts[i].availableMemory;
+			newHost.availableHdd = receivedHosts[i].availableHdd;
+			newHost.totalCpu = receivedHosts[i].totalCpu;
+			newHost.totalMemory = receivedHosts[i].totalMemory;
+			newHost.totalHdd = receivedHosts[i].totalHdd;
+			newHost.nodeIp = receivedHosts[i].nodeIp;
+			newHost.availableCpu = receivedHosts[i].availableCpu;
+			for(var j in receivedHosts[i].applications) {
+				var app = receivedHosts[i].applications[j];
+				var appType = getAppType(app.type);
+				var newApp = new Application(app.id, appType, newHost);
+				newHost.applications.push(newApp);
+			}
+			hosts.push(newHost);
+		}
+		if(readyToRender) {
+			renderFrame();
+		}
+	});
 }
 
 function insertNewAppTypeIntoDB() {
@@ -445,18 +446,15 @@ function insertAppTypeIntoDB(newAppType) {
 
 function loadHostTypesFromREST() {
 	
-	$.post('localhost:8070/cps/getHostTypes', null, function(results) { 
+	$.getJSON('http://localhost:8070/cps/hosts-test?callback=', null, function(results) { 
 
 	// var dummyResults = '[{"id":1,"name":"ht1","default_cpu":"32","default_memory":"32","default_hdd":"32"},{"id":2,"name":"Android Smartphone","default_cpu":"64","default_memory":"64","default_hdd":"64"}]';
 	
-		var receivedHostTypes = JSON.parse(results);
+		var receivedHostTypes = results;
 
 		for(var i in receivedHostTypes) {
 			var newHostType = new HostType(
-				receivedHostTypes[i].name, 
-				receivedHostTypes[i].default_cpu,
-				receivedHostTypes[i].default_memory, 
-				receivedHostTypes[i].default_hdd 
+				receivedHostTypes[i].name
 			);
 
 			newHostType.color = getRandomColor();
