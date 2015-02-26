@@ -56,10 +56,6 @@ function initUI(scene) {
 	});
 
 
-	$('#btn_addNewHost').button().click(function() {
-		addNewHost();
-	});
-
 	$('#btn_next').button().click(function() {
 		$('#dialog_addNewAppType_part1').hide();
 		$('#dialog_addNewAppType_part2').show();
@@ -283,7 +279,7 @@ function getAppType(name) {
 	return false;
 }
 
-
+/*
 function addNewHost() {
 	var hostName = $('#input_newHost').val();
 	var hostTypeName = $('#select_newHostType option:selected').text();
@@ -313,7 +309,7 @@ function addNewHost() {
 
 	renderFrame();
 }
-
+*/
 
 function addNewRequirement() {
 	var hostName = $('#select_host option:selected').text();
@@ -399,7 +395,8 @@ function getAppTypesFromDB() {
 }
 
 function getFullDataFromREST() {
-	$.getJSON('http://localhost:8070/cps/hosts?callback=', null, function(results) { 
+	var localUrl = 'http://' + window.location.host + ':8070/cps/full?callback=?' 
+	$.getJSON(localUrl, null, function(results) { 
 
 		// results = '[{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":2,"availableCpu":9,"availableHdd":10,"id":"hi2","type":"ht1","nodeIp":"asd.asd.asd.asd","applications":[{ "id":"hi2", "type":"ht1"}]},{"totalCpu":10,"totalHdd":10,"totalMemory":10,"availableMemory":10,"availableCpu":10,"availableHdd":10,"id":"hi1","type":"ht1","applications":[]}]';
 		var receivedHosts = results;
@@ -439,14 +436,14 @@ function insertAppTypeIntoDB(newAppType) {
 		'dbscripts/insertAppType.php', 
 		{data: JSON.stringify(newAppType)},
 		function(result){
-			console.log(result);
 		}
 	);
 }
 
 function loadHostTypesFromREST() {
-	
-	$.getJSON('http://localhost:8070/cps/hosts-test?callback=', null, function(results) { 
+
+	var localUrl = 'http://' + window.location.host + ':8070/cps/hosts?callback=?' 
+	$.getJSON(localUrl, null, function(results) { 
 
 	// var dummyResults = '[{"id":1,"name":"ht1","default_cpu":"32","default_memory":"32","default_hdd":"32"},{"id":2,"name":"Android Smartphone","default_cpu":"64","default_memory":"64","default_hdd":"64"}]';
 	
@@ -454,23 +451,27 @@ function loadHostTypesFromREST() {
 
 		for(var i in receivedHostTypes) {
 			var newHostType = new HostType(
-				receivedHostTypes[i].name
+				receivedHostTypes[i].name,
+				0,
+				0,
+				0
 			);
 
 			newHostType.color = getRandomColor();
-			hostTypes.push(newHostType);
-
-			var newOption = new Option(receivedHostTypes[i].name, $('#select_newHostType option').length);		
+			hostTypes.push(newHostType);	
+			
+			var newOption = new Option(receivedHostTypes[j].name, $('#select_hostTypeForApp option').length);		
 			$(newOption).html();
-			$('#select_newHostType').append(newOption);		
-		
-		}
+			$('#select_hostTypeForApp').append(newOption);
 
+		}
+/*
 		for(var j in receivedHostTypes) {		
 			var newOption = new Option(receivedHostTypes[j].name, $('#select_hostTypeForApp option').length);		
 			$(newOption).html();
 			$('#select_hostTypeForApp').append(newOption);
 		}
+*/
 	});
 
 }
@@ -489,11 +490,10 @@ function sendNewRequest() {
 			'dbscripts/insertRequest.php', 
 			{data: JSON.stringify(requests)},
 			function(result){
-				console.log(result);
-				
-				$.post(
-					'localhost:8070/cps/init', 
-					{}
+
+				var localUrl = 'http://' + window.location.host + ':8070/cps/init?callback=?' 
+				$.getJSON(localUrl, null, function(results) { 
+					}
 				);
 				
 			}
