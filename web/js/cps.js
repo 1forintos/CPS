@@ -23,6 +23,7 @@ window.onload = function() {
 	getAppTypesFromDB();
 }
 
+
 window.setInterval(function(){  
 	getFullDataFromREST();
 }, 1000);
@@ -175,12 +176,9 @@ function validatePopupInputs() {
 		alert("Please fill in all inputs.")
 		return false;
 	}
-	var appId = $('#input_appType_id').val();
+
 	for(var i in hostTypes) {
-		if(appId == "" 
-		|| appId == null
-		|| isNaN(appId)
-		|| tmpAppRequirement[i].requiredCpu == "" 
+		if(tmpAppRequirement[i].requiredCpu == "" 
 		|| tmpAppRequirement[i].requiredCpu == null
 		|| isNaN(tmpAppRequirement[i].requiredCpu)
 		|| tmpAppRequirement[i].requiredMemory == "" 
@@ -189,7 +187,7 @@ function validatePopupInputs() {
 		|| tmpAppRequirement[i].requiredHdd == "" 
 		|| tmpAppRequirement[i].requiredHdd == null
 		|| isNaN(tmpAppRequirement[i].requiredHdd)) {
-			alert("The Application ID and all requirements for all Host types have to be added as numeric values.");
+			alert("The requirements of the application for all Host types have to be added as numeric values.");
 			return false;
 		}
 	}
@@ -444,8 +442,6 @@ function loadHostTypesFromREST() {
 
 	var localUrl = 'http://' + window.location.host + ':8070/cps/hosts?callback=?' 
 	$.getJSON(localUrl, null, function(results) { 
-
-	// var dummyResults = '[{"id":1,"name":"ht1","default_cpu":"32","default_memory":"32","default_hdd":"32"},{"id":2,"name":"Android Smartphone","default_cpu":"64","default_memory":"64","default_hdd":"64"}]';
 	
 		var receivedHostTypes = results;
 
@@ -490,14 +486,20 @@ function sendNewRequest() {
 			'dbscripts/insertRequest.php', 
 			{data: JSON.stringify(requests)},
 			function(result){
-
 				var localUrl = 'http://' + window.location.host + ':8070/cps/init?callback=?' 
 				$.getJSON(localUrl, null, function(results) { 
 					}
 				);
-				
 			}
-		);
+		).success(function(){
+			$.post(
+				'dbscripts/genReqWrapper.php', 
+				{data: JSON.stringify(requests)},
+				function(result){
+					console.log(result);
+				}
+			);
+		});
 	}
 }
 
